@@ -22,10 +22,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder()).dataSource(dataSource)
 				.usersByUsernameQuery("select username, password, enabled from users where username=?")
 				.authoritiesByUsernameQuery("select username,role from users where username=?");
+		;
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated().and().formLogin().permitAll().and().logout().permitAll();
+		http.authorizeRequests().anyRequest().authenticated().and().formLogin()
+				.permitAll().and().logout().permitAll();
 	}
 }

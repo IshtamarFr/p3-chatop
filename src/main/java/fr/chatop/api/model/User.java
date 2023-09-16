@@ -22,7 +22,9 @@ public class User {
 	private long id;
 
 	private String email;
-	private String name;
+	private String username;
+	private String role;
+	private boolean enabled;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
