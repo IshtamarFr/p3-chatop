@@ -18,16 +18,17 @@ import lombok.Data;
 @Table(name = "USERS")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	private String email;
 	private String username;
-	private String role;
-	private boolean enabled;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
+
+	private String role;
+	private boolean enabled;
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;
