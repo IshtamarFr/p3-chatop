@@ -26,13 +26,10 @@ public class User implements UserDetails {
 	private long id;
 
 	private String email;
-	private String username;
+	private String name;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
-
-	private String role;
-	private boolean enabled;
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;
