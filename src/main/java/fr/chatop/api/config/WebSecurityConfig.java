@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -28,16 +29,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
+		http.csrf().disable();
+		
 		http
-				.csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/auth/register").permitAll()
-				.antMatchers("/auth/login").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.formLogin().permitAll()
-				.and()
-				.logout().permitAll();
+			.authorizeRequests()
+			.antMatchers("/auth/register").permitAll()
+			.antMatchers("/auth/login").permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.formLogin().permitAll()
+			.and()
+			.logout().permitAll();
+		
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		// @formatter:on
 	}
 }
