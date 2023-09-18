@@ -2,7 +2,6 @@ package fr.chatop.api.config;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import fr.chatop.api.model.User;
@@ -13,8 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenUtil {
 	private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
 
-	@Value("${app.jwt.secret}")
-	private String SECRET_KEY;
+	private String SECRET_KEY = "B27F48AD27BDAAA197327AA39F2718CABAD2987AB3B3C7";
 
 	public String generateAccessToken(User user) {
 		return Jwts.builder().setSubject(String.format("%s,%s", user.getId(), user.getEmail())).setIssuer("CodeJava")
