@@ -37,10 +37,10 @@ public class UserController {
 	@PostMapping("/auth/register")
 	public ResponseEntity<?> addUser(@RequestBody User user) {
 		try {
-			userService.saveUser(user);
-			String accessToken = jwtUtil.generateAccessToken(user);
+			User candidate = userService.saveUser(user);
+			String accessToken = jwtUtil.generateAccessToken(candidate);
 			AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
-			return ResponseEntity.ok().body("123456");
+			return ResponseEntity.ok().body(response);
 		} catch(Exception e) {
 			return ResponseEntity.status(409).body(e);
 		}

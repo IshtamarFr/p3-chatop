@@ -23,8 +23,8 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 
-	public void saveUser(User user) {
+	public User saveUser(User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 }
