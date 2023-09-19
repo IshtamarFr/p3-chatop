@@ -35,7 +35,7 @@ public class AuthApi {
              
             User user = (User) authentication.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);
-            AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
+			AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
              
             return ResponseEntity.ok().body(response);
              
