@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//roads to set free
 		http.authorizeRequests()
 			.antMatchers("/auth/login").permitAll()
+			.antMatchers("/auth/register").permitAll()
 			.anyRequest().authenticated();
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
