@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import fr.chatop.api.model.User;
@@ -22,7 +23,8 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 
-	public User saveUser(User user) {
-		return userRepository.save(user);
+	public void saveUser(User user) {
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+		userRepository.save(user);
 	}
 }

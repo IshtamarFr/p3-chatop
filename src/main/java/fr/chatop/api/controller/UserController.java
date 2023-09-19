@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.chatop.api.config.JwtTokenUtil;
+import fr.chatop.api.model.AuthResponse;
 import fr.chatop.api.model.User;
 import fr.chatop.api.service.UserService;
 
@@ -19,6 +21,8 @@ import fr.chatop.api.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private JwtTokenUtil jwtUtil;
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") final long id) {
@@ -31,8 +35,15 @@ public class UserController {
 	}
 
 	@PostMapping("/auth/register")
-	public void addUser(@RequestBody User user) {
-		userService.saveUser(user);
+	public ResponseEntity<?> addUser(@RequestBody User user) {
+		try {
+			userService.saveUser(user);
+			String accessToken = jwtUtil.generateAccessToken(user);
+			AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
+			return ResponseEntity.ok().body("123456");
+		} catch(Exception e) {
+			return ResponseEntity.status(409).body(e);
+		}
 	}
 
 }
