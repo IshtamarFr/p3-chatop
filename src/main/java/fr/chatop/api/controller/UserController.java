@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.chatop.api.config.JwtTokenFilter;
 import fr.chatop.api.config.JwtTokenUtil;
 import fr.chatop.api.model.AuthResponse;
 import fr.chatop.api.model.User;
@@ -25,8 +24,6 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private JwtTokenUtil jwtUtil;
-	@Autowired
-	private JwtTokenFilter jwtTokenFilter;
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") final long id) {
