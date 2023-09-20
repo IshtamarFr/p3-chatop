@@ -19,7 +19,6 @@ import lombok.Data;
 public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private long id;
 
 	@Column(name = "rental_id")
