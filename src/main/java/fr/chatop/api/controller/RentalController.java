@@ -93,10 +93,21 @@ public class RentalController {
 			Optional<Rental> candidate = rentalService.getRental(id);
 			if (candidate.isPresent()) {
 				//we now check if owner's id matches with rental's owner's id
+				//plus we need data from old rental to make new rental
 				Rental realCandidate=candidate.get();
 				if (ownerId==realCandidate.getOwnerId()) {
 					//token's owner matches with rental's owner's id
-					return ResponseEntity.status(418).body(candidate);
+					Rental modification=new Rental();
+					modification.setId(id);
+					modification.setName(name);
+					modification.setSurface(surface);
+					modification.setPrice(price);
+					modification.setPicture(realCandidate.getPicture());
+					modification.setDescription(description);
+					modification.setOwnerId(ownerId);
+					modification.setCreatedAt(realCandidate.getCreatedAt());
+					rentalService.saveRental(modification);
+					return ResponseEntity.ok().body(modification);
 				} else {
 					return ResponseEntity.notFound().build();
 				}
