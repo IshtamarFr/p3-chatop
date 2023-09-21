@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,6 +52,25 @@ public class RentalController {
 			candidate.setOwnerId(ownerId);
 			rentalService.saveRental(candidate);
 			return ResponseEntity.ok().body(candidate);
+		} catch (Exception e) {
+			return ResponseEntity.status(409).body(e);
+		}
+	}
+
+	@PutMapping("/rentals/{id}")
+	//@formatter:off
+	/*
+	 * IMPORTANT :
+	 * 1- this PutMapping gets PathVariable for Rental's id
+	 * 2- Owner's id must be gotten from Jwt and checked against expected owner's id
+	 * 3- This method doesn't allow to change picture
+	 */
+	//@formatter: on
+	public ResponseEntity<?> modifyRental(@RequestParam("name") String name, @RequestParam("surface") float surface,
+			@RequestParam("price") float price, @RequestParam("description") String description,
+			@PathVariable("id") long id) {
+		try {
+			return ResponseEntity.status(418).build();
 		} catch (Exception e) {
 			return ResponseEntity.status(409).body(e);
 		}

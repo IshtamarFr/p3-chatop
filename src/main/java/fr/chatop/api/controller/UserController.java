@@ -51,10 +51,7 @@ public class UserController {
 	// Endpoint is secured so no need to check if jwt exists and is valid
 	public ResponseEntity<?> getMe(@RequestHeader("Authorization") String jwt) {
 		try {
-			String token = jwt.split(" ")[1].trim();
-			String[] jwtSubject = jwtUtil.getSubject(token).split(",");
-			Long id = Long.parseLong(jwtSubject[0]);
-
+			long id = jwtUtil.getIdFromValidToken(jwt);
 			Optional<User> candidate = userService.getUser(id);
 			if (candidate.isPresent()) {
 				return ResponseEntity.ok().body(candidate);

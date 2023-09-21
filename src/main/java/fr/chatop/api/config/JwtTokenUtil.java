@@ -54,6 +54,16 @@ public class JwtTokenUtil {
 		return parseClaims(token).getSubject();
 	}
 
+	public long getIdFromValidToken(String jwt) {
+		try {
+			String token = jwt.split(" ")[1].trim();
+			String[] jwtSubject = getSubject(token).split(",");
+			return Long.parseLong(jwtSubject[0]);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
 	private Claims parseClaims(String token) {
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 	}
