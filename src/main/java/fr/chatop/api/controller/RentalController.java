@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.service.RentalService;
@@ -36,9 +37,9 @@ public class RentalController {
 	}
 
 	@PostMapping("/rentals")
-	public ResponseEntity<?> createRental(@RequestBody Rental rental) {
+	public ResponseEntity<?> createRental(@RequestParam("picture") MultipartFile multipartFile) {
 		try {
-			Rental candidate = rentalService.saveRental(rental);
+			String candidate = rentalService.savePicture(multipartFile);
 			return ResponseEntity.ok().body(candidate);
 		} catch (Exception e) {
 			return ResponseEntity.status(409).body(e);
