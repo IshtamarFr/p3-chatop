@@ -36,10 +36,20 @@ public class RentalController {
 		}
 	}
 
-	@PostMapping("/rentals")
-	public ResponseEntity<?> createRental(@RequestParam("picture") MultipartFile multipartFile) {
+	@PostMapping("/rentals/{owner_id}")
+	public ResponseEntity<?> createRental(@RequestParam("picture") MultipartFile multipartFile,
+			@RequestParam("name") String name, @RequestParam("surface") float surface,
+			@RequestParam("price") float price, @RequestParam("description") String description,
+			@PathVariable("owner_id") long ownerId) {
 		try {
-			String candidate = rentalService.savePicture(multipartFile);
+			Rental candidate = new Rental();
+			candidate.setName(name);
+			candidate.setSurface(surface);
+			candidate.setPrice(price);
+			candidate.setPicture(rentalService.savePicture(multipartFile));
+			candidate.setDescription(description);
+			candidate.setOwnerId(ownerId);
+			rentalService.saveRental(candidate);
 			return ResponseEntity.ok().body(candidate);
 		} catch (Exception e) {
 			return ResponseEntity.status(409).body(e);
