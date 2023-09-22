@@ -16,6 +16,7 @@ import fr.chatop.api.config.JwtTokenUtil;
 import fr.chatop.api.model.AuthResponse;
 import fr.chatop.api.model.User;
 import fr.chatop.api.service.UserService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -25,6 +26,7 @@ public class UserController {
 	@Autowired
 	private JwtTokenUtil jwtUtil;
 
+	@ApiOperation("[Test-Only] Gets data from User by Id")
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") final long id) {
 		Optional<User> candidate = userService.getUser(id);
@@ -35,6 +37,7 @@ public class UserController {
 		}
 	}
 
+	@ApiOperation("Registers new User (email must be unique)")
 	@PostMapping("/auth/register")
 	public ResponseEntity<?> addUser(@RequestBody User user) {
 		try {
@@ -47,6 +50,7 @@ public class UserController {
 		}
 	}
 
+	@ApiOperation("Gets my own data if I'm logged in")
 	@GetMapping("/auth/me")
 	// Endpoint is secured so no need to check if jwt exists and is valid
 	public ResponseEntity<?> getMe(@RequestHeader("Authorization") String jwt) {

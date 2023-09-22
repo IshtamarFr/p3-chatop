@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import fr.chatop.api.config.JwtTokenUtil;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.service.RentalService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -27,11 +28,13 @@ public class RentalController {
 	@Autowired
 	private JwtTokenUtil jwtUtil;
 
+	@ApiOperation("Lists all rentals")
 	@GetMapping("/rentals")
 	public ResponseEntity<?> getAllRentals() {
 		return ResponseEntity.ok().body(rentalService.getRentals());
 	}
 
+	@ApiOperation("Lists rental by Id")
 	@GetMapping("/rentals/{id}")
 	public ResponseEntity<?> getRental(@PathVariable("id") final long id) {
 		Optional<Rental> candidate = rentalService.getRental(id);
@@ -42,6 +45,7 @@ public class RentalController {
 		}
 	}
 
+	@ApiOperation("Create a new rental for user - Picture being uploaded and kinda obfuscated")
 	@PostMapping("/rentals/{owner_id}")
 	public ResponseEntity<?> createRental(
 	//@formatter:off
@@ -68,6 +72,7 @@ public class RentalController {
 		}
 	}
 
+	@ApiOperation("Changes rental's details - picture cannot be changed")
 	@PutMapping("/rentals/{id}")
 	//@formatter:off
 	/*

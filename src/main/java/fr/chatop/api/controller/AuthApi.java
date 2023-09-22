@@ -17,6 +17,7 @@ import fr.chatop.api.config.JwtTokenUtil;
 import fr.chatop.api.model.AuthRequest;
 import fr.chatop.api.model.AuthResponse;
 import fr.chatop.api.model.User;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class AuthApi {
@@ -25,6 +26,7 @@ public class AuthApi {
 	@Autowired
 	JwtTokenUtil jwtUtil;
 
+	@ApiOperation("Login user and sends Jwt token")
 	@PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) {
         try {

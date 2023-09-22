@@ -12,10 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.chatop.api.config.FileUploadUtil;
 import fr.chatop.api.model.FileUploadResponse;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class FileUploadController {
 
+	@ApiOperation("[Test-Only] Saves a file to server and kinda obfuscates it")
 	@PostMapping("/uploadFile")
 	public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile)
 			throws IOException {
