@@ -28,9 +28,6 @@ public class Rental {
 	@Column(name = "owner_id")
 	private long ownerId;
 
-	@Column(name = "created_at")
-	private Timestamp createdAt;
-
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Timestamp created_at;
+	private Timestamp updated_at;
 }

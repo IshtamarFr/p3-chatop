@@ -1,5 +1,7 @@
 package fr.chatop.api.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,12 @@ public class RentalController {
 	@ApiOperation("Lists all rentals")
 	@GetMapping("/rentals")
 	public ResponseEntity<?> getAllRentals() {
-		return ResponseEntity.ok().body(rentalService.getRentals());
+		HashMap<String, List<Rental>> map = new HashMap<>();
+		map.put("rentals", rentalService.getRentals());
+		return ResponseEntity.ok().body(map);
 	}
 
-	@ApiOperation("Lists rental by Id")
+	@ApiOperation("Shows rental with correct Id")
 	@GetMapping("/rentals/{id}")
 	public ResponseEntity<?> getRental(@PathVariable("id") final long id) {
 		Optional<Rental> candidate = rentalService.getRental(id);
@@ -110,7 +114,7 @@ public class RentalController {
 					modification.setPicture(realCandidate.getPicture());
 					modification.setDescription(description);
 					modification.setOwnerId(ownerId);
-					modification.setCreatedAt(realCandidate.getCreatedAt());
+					modification.setCreated_at(realCandidate.getCreated_at());
 					rentalService.saveRental(modification);
 					return ResponseEntity.ok().body(modification);
 				} else {
