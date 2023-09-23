@@ -3,7 +3,6 @@ package fr.chatop.api.model;
 import java.sql.Timestamp;
 import java.util.Collection;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,11 +30,8 @@ public class User implements UserDetails {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
-	@Column(name = "created_at")
-	private Timestamp createdAt;
-
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Timestamp created_at;
+	private Timestamp updated_at;
 
 	// Mandatory for UserDetails for Spring Security
 

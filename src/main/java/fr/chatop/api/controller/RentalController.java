@@ -68,7 +68,7 @@ public class RentalController {
 			candidate.setPrice(price);
 			candidate.setPicture(rentalService.savePicture(multipartFile));
 			candidate.setDescription(description);
-			candidate.setOwnerId(ownerId);
+			candidate.setOwner_id(ownerId);
 			rentalService.saveRental(candidate);
 			return ResponseEntity.ok().body(candidate);
 		} catch (Exception e) {
@@ -104,7 +104,7 @@ public class RentalController {
 				//we now check if owner's id matches with rental's owner's id
 				//plus we need data from old rental to make new rental
 				Rental realCandidate=candidate.get();
-				if (ownerId==realCandidate.getOwnerId()) {
+				if (ownerId==realCandidate.getOwner_id()) {
 					//token's owner matches with rental's owner's id
 					Rental modification=new Rental();
 					modification.setId(id);
@@ -113,7 +113,7 @@ public class RentalController {
 					modification.setPrice(price);
 					modification.setPicture(realCandidate.getPicture());
 					modification.setDescription(description);
-					modification.setOwnerId(ownerId);
+					modification.setOwner_id(ownerId);
 					modification.setCreated_at(realCandidate.getCreated_at());
 					rentalService.saveRental(modification);
 					return ResponseEntity.ok().body(modification);

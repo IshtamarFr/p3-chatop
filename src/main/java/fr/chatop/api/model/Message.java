@@ -2,7 +2,6 @@ package fr.chatop.api.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,20 +19,14 @@ public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
-	@Column(name = "rental_id")
-	private long rentalId;
-
-	@Column(name = "user_id")
-	private long userId;
+	private long rental_id;
+	private long user_id;
 
 	private String message;
 
-	@Column(name = "created_at")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private Timestamp createdAt;
+	private Timestamp created_at;
 
-	@Column(name = "updated_at")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private Timestamp updatedAt;
+	private Timestamp updated_at;
 }

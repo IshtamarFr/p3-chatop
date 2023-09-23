@@ -33,6 +33,6 @@ public class RentalService {
 	public String savePicture(MultipartFile multipartFile) throws IOException {
 		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		String filecode = FileUploadUtil.saveFile(fileName, multipartFile);
-		return ("/downloadFile/" + filecode);
+		return ("/Files-Upload/" + filecode);
 	}
 }

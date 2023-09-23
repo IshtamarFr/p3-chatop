@@ -18,11 +18,11 @@ public class MessageController {
 	private MessageService messageService;
 
 	@ApiOperation("Creates a new message")
-	@PostMapping("/message")
+	@PostMapping("/messages")
 	public ResponseEntity<?> postNewMessage(@RequestBody Message message) {
 		try {
 			messageService.saveMessage(message);
-			return ResponseEntity.ok().body(message);
+			return ResponseEntity.ok().body("Message sent with success");
 		} catch (Exception e) {
 			return ResponseEntity.status(409).body(e);
 		}

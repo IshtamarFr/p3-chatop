@@ -2,7 +2,6 @@ package fr.chatop.api.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,10 +23,7 @@ public class Rental {
 	private float price;
 	private String picture;
 	private String description;
-
-	@Column(name = "owner_id")
-	private long ownerId;
-
+	private long owner_id;
 	private Timestamp created_at;
 	private Timestamp updated_at;
 }
