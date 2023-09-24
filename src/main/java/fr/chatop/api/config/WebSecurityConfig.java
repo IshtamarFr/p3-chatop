@@ -54,19 +54,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
-		http.csrf().disable();
+		http.csrf((csrf) -> csrf.disable());
 		
 		//roads to set free
-		http.authorizeRequests()
+		http.authorizeHttpRequests((authz) -> authz
 			.antMatchers("/auth/login").permitAll()
 			.antMatchers("/auth/register").permitAll()
 			.antMatchers("/v3/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html","/swagger-ui/**", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui.html").permitAll()
-			.anyRequest().authenticated();
+			.anyRequest().authenticated());
 		
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
 		//JwtFilters
-		http.exceptionHandling()
+		http.exceptionHandling((exception) -> exception
         .authenticationEntryPoint(
             (request, response, ex) -> {
                 response.sendError(
@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     ex.getMessage()
                 );
             }
-        );
+        ));
  
 		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		// @formatter:on
