@@ -50,7 +50,7 @@ public class RentalController {
 	}
 
 	@ApiOperation("Create a new rental for user - Picture being uploaded and kinda obfuscated")
-	@PostMapping("/rentals/{owner_id}")
+	@PostMapping("/rentals")
 	public ResponseEntity<?> createRental(
 	//@formatter:off
 		@RequestParam("picture") MultipartFile multipartFile,
@@ -58,10 +58,11 @@ public class RentalController {
 		@RequestParam("surface") float surface,
 		@RequestParam("price") float price,
 		@RequestParam("description") String description,
-		@PathVariable("owner_id") long ownerId
+		@RequestHeader("Authorization") String jwt
 	//@formatter:on
 	) {
 		try {
+			long ownerId = jwtUtil.getIdFromValidToken(jwt);
 			Rental candidate = new Rental();
 			candidate.setName(name);
 			candidate.setSurface(surface);
