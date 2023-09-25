@@ -1,4 +1,4 @@
-package fr.chatop.api.model;
+package fr.chatop.api.controller.dto;
 
 import lombok.Data;
 

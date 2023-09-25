@@ -1,4 +1,4 @@
-package fr.chatop.api.model;
+package fr.chatop.api.controller.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

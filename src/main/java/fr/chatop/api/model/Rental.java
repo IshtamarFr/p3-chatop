@@ -2,11 +2,7 @@ package fr.chatop.api.model;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -24,6 +20,7 @@ public class Rental {
 	private String picture;
 	private String description;
 	private long owner_id;
+
 	private Timestamp created_at;
 	private Timestamp updated_at;
 }

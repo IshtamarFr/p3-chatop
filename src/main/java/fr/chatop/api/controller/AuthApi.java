@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.chatop.api.config.JwtTokenUtil;
-import fr.chatop.api.model.AuthRequest;
-import fr.chatop.api.model.AuthResponse;
+import fr.chatop.api.controller.dto.AuthRequest;
+import fr.chatop.api.controller.dto.AuthResponse;
 import fr.chatop.api.model.User;
 import io.swagger.annotations.ApiOperation;
 
