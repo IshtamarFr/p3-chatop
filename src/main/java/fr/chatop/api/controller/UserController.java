@@ -1,22 +1,16 @@
 package fr.chatop.api.controller;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.AuthResponse;
+import fr.chatop.api.controller.dto.UserDto;
 import fr.chatop.api.model.User;
 import fr.chatop.api.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,7 +23,7 @@ public class UserController {
 	@ApiOperation("[Test-Only] Gets data from User by Id")
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") final long id) {
-		Optional<User> candidate = userService.getUser(id);
+		Optional<UserDto> candidate = userService.getUser(id);
 		if (candidate.isPresent()) {
 			return ResponseEntity.ok().body(candidate);
 		} else {
@@ -56,7 +50,7 @@ public class UserController {
 	public ResponseEntity<?> getMe(@RequestHeader("Authorization") String jwt) {
 		try {
 			long id = jwtUtil.getIdFromValidToken(jwt);
-			Optional<User> candidate = userService.getUser(id);
+			Optional<UserDto> candidate = userService.getUser(id);
 			if (candidate.isPresent()) {
 				return ResponseEntity.ok().body(candidate);
 			} else {

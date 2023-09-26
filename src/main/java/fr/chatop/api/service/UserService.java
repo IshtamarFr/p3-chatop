@@ -1,29 +1,27 @@
 package fr.chatop.api.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import fr.chatop.api.config.AppConfig;
+import fr.chatop.api.controller.dto.UserDto;
+import fr.chatop.api.model.User;
+import fr.chatop.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.chatop.api.model.User;
-import fr.chatop.api.repository.UserRepository;
+import java.util.Optional;
 
 @Service
 public class UserService {
-	@Autowired
-	private UserRepository userRepository;
+	@Autowired private UserRepository userRepository;
+	@Autowired private AppConfig appConfig;
 
-	@Autowired
-	private AppConfig appConfig;
-
-	public List<User> getUsers() {
-		return userRepository.findAll();
-	}
-
-	public Optional<User> getUser(final long id) {
-		return userRepository.findById(id);
+	public Optional<UserDto> getUser(final long id) {
+		Optional<User> user = userRepository.findById(id);
+		if (user.isPresent()) {
+			UserDto userDto=appConfig.modelMapper().map(user.get(), UserDto.class);
+			return Optional.of(userDto);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public User saveUser(User user) {
