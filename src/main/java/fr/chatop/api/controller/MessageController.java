@@ -14,8 +14,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @CrossOrigin("*")
 public class MessageController {
-	@Autowired
-	private MessageServiceImpl messageServiceImpl;
+	@Autowired private MessageServiceImpl messageServiceImpl;
 
 	@ApiOperation("Creates a new message")
 	@PostMapping("/messages")

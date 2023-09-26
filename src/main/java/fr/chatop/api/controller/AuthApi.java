@@ -1,7 +1,10 @@
 package fr.chatop.api.controller;
 
-import javax.validation.Valid;
-
+import fr.chatop.api.config.util.JwtTokenUtil;
+import fr.chatop.api.controller.dto.AuthRequest;
+import fr.chatop.api.controller.dto.AuthResponse;
+import fr.chatop.api.model.User;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.chatop.api.config.util.JwtTokenUtil;
-import fr.chatop.api.controller.dto.AuthRequest;
-import fr.chatop.api.controller.dto.AuthResponse;
-import fr.chatop.api.model.User;
-import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 
 @RestController
 public class AuthApi {
-	@Autowired
-	AuthenticationManager authManager;
-	@Autowired
-	JwtTokenUtil jwtUtil;
+	@Autowired AuthenticationManager authManager;
+	@Autowired JwtTokenUtil jwtUtil;
 
 	@ApiOperation("Login user and sends Jwt token")
 	@PostMapping("/auth/login")

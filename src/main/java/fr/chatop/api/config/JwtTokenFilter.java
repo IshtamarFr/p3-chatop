@@ -1,13 +1,7 @@
 package fr.chatop.api.config;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import fr.chatop.api.config.util.JwtTokenUtil;
+import fr.chatop.api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +11,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import fr.chatop.api.model.User;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-	@Autowired
-	private JwtTokenUtil jwtUtil;
+	@Autowired private JwtTokenUtil jwtUtil;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -46,17 +43,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 	private boolean hasAuthorizationBearer(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
-		if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
-			return false;
-		}
-
-		return true;
-	}
+        return !ObjectUtils.isEmpty(header) && header.startsWith("Bearer");
+    }
 
 	private String getAccessToken(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
-		String token = header.split(" ")[1].trim();
-		return token;
+        return header.split(" ")[1].trim();
 	}
 
 	private void setAuthenticationContext(String token, HttpServletRequest request) {

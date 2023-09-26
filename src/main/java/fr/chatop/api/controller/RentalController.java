@@ -17,11 +17,9 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*")
 public class RentalController {
-	@Autowired
-	private RentalServiceImpl rentalServiceImpl;
+	@Autowired private RentalServiceImpl rentalServiceImpl;
 
-	@Autowired
-	private JwtTokenUtil jwtUtil;
+	@Autowired private JwtTokenUtil jwtUtil;
 
 	@ApiOperation("Lists all rentals")
 	@GetMapping("/rentals")

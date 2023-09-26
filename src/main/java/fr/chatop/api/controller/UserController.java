@@ -15,10 +15,8 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*")
 public class UserController {
-	@Autowired
-	private UserServiceImpl userServiceImpl;
-	@Autowired
-	private JwtTokenUtil jwtUtil;
+	@Autowired private UserServiceImpl userServiceImpl;
+	@Autowired private JwtTokenUtil jwtUtil;
 
 	@ApiOperation("[Test-Only] Gets data from User by Id")
 	@GetMapping("/user/{id}")
