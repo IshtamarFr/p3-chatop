@@ -21,7 +21,7 @@ import fr.chatop.api.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserRepository userRepo;
@@ -38,11 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(username -> userRepo.findByEmail(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found.")));
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 
 	@Override

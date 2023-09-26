@@ -1,4 +1,4 @@
-package fr.chatop.api.config;
+package fr.chatop.api.config.util;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.chatop.api.config.JwtTokenUtil;
+import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.AuthResponse;
 import fr.chatop.api.model.User;
 import fr.chatop.api.service.UserService;

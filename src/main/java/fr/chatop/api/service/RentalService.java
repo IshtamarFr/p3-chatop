@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.chatop.api.config.FileUploadUtil;
+import fr.chatop.api.config.util.FileUploadUtil;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.repository.RentalRepository;
 

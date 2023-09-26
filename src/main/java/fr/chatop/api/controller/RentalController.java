@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.chatop.api.config.JwtTokenUtil;
+import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.service.RentalService;
 import io.swagger.annotations.ApiOperation;
