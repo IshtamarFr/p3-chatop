@@ -2,6 +2,7 @@ package fr.chatop.api.service;
 
 import fr.chatop.api.config.AppConfig;
 import fr.chatop.api.config.util.FileUploadUtil;
+import fr.chatop.api.config.util.ObjectMapperUtils;
 import fr.chatop.api.controller.dto.RentalDto;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.repository.RentalRepository;
@@ -20,8 +21,9 @@ public class RentalServiceImpl implements RentalService {
 	@Autowired private AppConfig appConfig;
 
 	@Override
-	public List<Rental> getRentals() {
-		return rentalRepository.findAll();
+	public List<RentalDto> getRentals() {
+		List<Rental> listOfRentals=rentalRepository.findAll();
+		return ObjectMapperUtils.mapAll(listOfRentals,RentalDto.class);
 	}
 
 	@Override

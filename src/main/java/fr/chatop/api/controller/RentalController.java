@@ -24,7 +24,7 @@ public class RentalController {
 	@ApiOperation("Lists all rentals")
 	@GetMapping("/rentals")
 	public ResponseEntity<?> getAllRentals() {
-		HashMap<String, List<Rental>> map = new HashMap<>();
+		HashMap<String, List<RentalDto>> map = new HashMap<>();
 		map.put("rentals", rentalServiceImpl.getRentals());
 		return ResponseEntity.ok().body(map);
 	}
