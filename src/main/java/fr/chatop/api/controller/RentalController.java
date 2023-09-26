@@ -1,31 +1,23 @@
 package fr.chatop.api.controller;
 
+import fr.chatop.api.config.util.JwtTokenUtil;
+import fr.chatop.api.model.Rental;
+import fr.chatop.api.service.RentalServiceImpl;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import fr.chatop.api.config.util.JwtTokenUtil;
-import fr.chatop.api.model.Rental;
-import fr.chatop.api.service.RentalService;
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class RentalController {
 	@Autowired
-	private RentalService rentalService;
+	private RentalServiceImpl rentalServiceImpl;
 
 	@Autowired
 	private JwtTokenUtil jwtUtil;
@@ -34,14 +26,14 @@ public class RentalController {
 	@GetMapping("/rentals")
 	public ResponseEntity<?> getAllRentals() {
 		HashMap<String, List<Rental>> map = new HashMap<>();
-		map.put("rentals", rentalService.getRentals());
+		map.put("rentals", rentalServiceImpl.getRentals());
 		return ResponseEntity.ok().body(map);
 	}
 
 	@ApiOperation("Shows rental with correct Id")
 	@GetMapping("/rentals/{id}")
 	public ResponseEntity<?> getRental(@PathVariable("id") final long id) {
-		Optional<Rental> candidate = rentalService.getRental(id);
+		Optional<Rental> candidate = rentalServiceImpl.getRental(id);
 		if (candidate.isPresent()) {
 			return ResponseEntity.ok().body(candidate);
 		} else {
@@ -67,10 +59,10 @@ public class RentalController {
 			candidate.setName(name);
 			candidate.setSurface(surface);
 			candidate.setPrice(price);
-			candidate.setPicture(rentalService.savePicture(multipartFile));
+			candidate.setPicture(rentalServiceImpl.savePicture(multipartFile));
 			candidate.setDescription(description);
 			candidate.setOwner_id(ownerId);
-			rentalService.saveRental(candidate);
+			rentalServiceImpl.saveRental(candidate);
 			return ResponseEntity.ok().body(candidate);
 		} catch (Exception e) {
 			return ResponseEntity.status(409).body(e);
@@ -100,7 +92,7 @@ public class RentalController {
 		try {
 			//we first try to check get the owner's id from jwt owner (already validated)
 			long ownerId=jwtUtil.getIdFromValidToken(jwt);
-			Optional<Rental> candidate = rentalService.getRental(id);
+			Optional<Rental> candidate = rentalServiceImpl.getRental(id);
 			if (candidate.isPresent()) {
 				//we now check if owner's id matches with rental's owner's id
 				//plus we need data from old rental to make new rental
@@ -116,7 +108,7 @@ public class RentalController {
 					modification.setDescription(description);
 					modification.setOwner_id(ownerId);
 					modification.setCreated_at(realCandidate.getCreated_at());
-					rentalService.saveRental(modification);
+					rentalServiceImpl.saveRental(modification);
 					return ResponseEntity.ok().body(modification);
 				} else {
 					return ResponseEntity.notFound().build();

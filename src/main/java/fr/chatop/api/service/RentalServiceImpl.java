@@ -1,0 +1,41 @@
+package fr.chatop.api.service;
+
+import fr.chatop.api.config.util.FileUploadUtil;
+import fr.chatop.api.model.Rental;
+import fr.chatop.api.repository.RentalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RentalServiceImpl implements RentalService {
+	@Autowired
+	private RentalRepository rentalRepository;
+
+	@Override
+	public List<Rental> getRentals() {
+		return rentalRepository.findAll();
+	}
+
+	@Override
+	public Optional<Rental> getRental(final long id) {
+		return rentalRepository.findById(id);
+	}
+
+	@Override
+	public Rental saveRental(Rental rental) {
+		return rentalRepository.save(rental);
+	}
+
+	@Override
+	public String savePicture(MultipartFile multipartFile) throws IOException {
+		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		String filecode = FileUploadUtil.saveFile(fileName, multipartFile);
+		return ("/Files-Upload/" + filecode);
+	}
+}
