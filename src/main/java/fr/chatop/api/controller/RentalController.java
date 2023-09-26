@@ -1,6 +1,7 @@
 package fr.chatop.api.controller;
 
 import fr.chatop.api.config.util.JwtTokenUtil;
+import fr.chatop.api.controller.dto.RentalDto;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.service.RentalServiceImpl;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,7 @@ public class RentalController {
 	@ApiOperation("Shows rental with correct Id")
 	@GetMapping("/rentals/{id}")
 	public ResponseEntity<?> getRental(@PathVariable("id") final long id) {
-		Optional<Rental> candidate = rentalServiceImpl.getRental(id);
+		Optional<RentalDto> candidate = rentalServiceImpl.getRental(id);
 		if (candidate.isPresent()) {
 			return ResponseEntity.ok().body(candidate);
 		} else {
@@ -92,11 +93,11 @@ public class RentalController {
 		try {
 			//we first try to check get the owner's id from jwt owner (already validated)
 			long ownerId=jwtUtil.getIdFromValidToken(jwt);
-			Optional<Rental> candidate = rentalServiceImpl.getRental(id);
+			Optional<RentalDto> candidate = rentalServiceImpl.getRental(id);
 			if (candidate.isPresent()) {
 				//we now check if owner's id matches with rental's owner's id
 				//plus we need data from old rental to make new rental
-				Rental realCandidate=candidate.get();
+				RentalDto realCandidate=candidate.get();
 				if (ownerId==realCandidate.getOwner_id()) {
 					//token's owner matches with rental's owner's id
 					Rental modification=new Rental();

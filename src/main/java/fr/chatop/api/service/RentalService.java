@@ -1,5 +1,6 @@
 package fr.chatop.api.service;
 
+import fr.chatop.api.controller.dto.RentalDto;
 import fr.chatop.api.model.Rental;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 public interface RentalService {
     List<Rental> getRentals();
-    Optional<Rental> getRental(final long id);
+    Optional<RentalDto> getRental(final long id);
     Rental saveRental(Rental rental);
     String savePicture(MultipartFile multipartFile) throws IOException;
 }

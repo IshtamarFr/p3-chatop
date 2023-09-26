@@ -1,6 +1,8 @@
 package fr.chatop.api.service;
 
+import fr.chatop.api.config.AppConfig;
 import fr.chatop.api.config.util.FileUploadUtil;
+import fr.chatop.api.controller.dto.RentalDto;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,8 @@ import java.util.Optional;
 
 @Service
 public class RentalServiceImpl implements RentalService {
-	@Autowired
-	private RentalRepository rentalRepository;
+	@Autowired private RentalRepository rentalRepository;
+	@Autowired private AppConfig appConfig;
 
 	@Override
 	public List<Rental> getRentals() {
@@ -23,8 +25,14 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 	@Override
-	public Optional<Rental> getRental(final long id) {
-		return rentalRepository.findById(id);
+	public Optional<RentalDto> getRental(final long id) {
+		Optional<Rental> rental=rentalRepository.findById(id);
+		if (rental.isPresent()) {
+			RentalDto rentalDto=appConfig.modelMapper().map(rental.get(),RentalDto.class);
+			return Optional.of(rentalDto);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	@Override
