@@ -1,10 +1,9 @@
 package fr.chatop.api.model;
 
-import java.sql.Timestamp;
-
-import javax.persistence.*;
-
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
