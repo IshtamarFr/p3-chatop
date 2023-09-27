@@ -4,6 +4,7 @@ import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.AuthResponse;
 import fr.chatop.api.controller.dto.UserDto;
 import fr.chatop.api.model.User;
+import fr.chatop.api.service.UserService;
 import fr.chatop.api.service.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,13 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*")
 public class UserController {
-	@Autowired private UserServiceImpl userServiceImpl;
+	@Autowired private UserService userService=new UserServiceImpl();
 	@Autowired private JwtTokenUtil jwtUtil;
 
 	@ApiOperation("[Test-Only] Gets data from User by Id")
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getUser(@PathVariable("id") final long id) {
-		Optional<UserDto> candidate = userServiceImpl.getUser(id);
+		Optional<UserDto> candidate = userService.getUser(id);
 		if (candidate.isPresent()) {
 			return ResponseEntity.ok().body(candidate);
 		} else {
@@ -33,7 +34,7 @@ public class UserController {
 	@PostMapping("/auth/register")
 	public ResponseEntity<?> addUser(@RequestBody User user) {
 		try {
-			User candidate = userServiceImpl.saveUser(user);
+			User candidate = userService.saveUser(user);
 			String accessToken = jwtUtil.generateAccessToken(candidate);
 			AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
 			return ResponseEntity.ok().body(response);
@@ -48,7 +49,7 @@ public class UserController {
 	public ResponseEntity<?> getMe(@RequestHeader("Authorization") String jwt) {
 		try {
 			long id = jwtUtil.getIdFromValidToken(jwt);
-			Optional<UserDto> candidate = userServiceImpl.getUser(id);
+			Optional<UserDto> candidate = userService.getUser(id);
 			if (candidate.isPresent()) {
 				return ResponseEntity.ok().body(candidate);
 			} else {

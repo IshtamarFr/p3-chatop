@@ -3,6 +3,7 @@ package fr.chatop.api.controller;
 import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.RentalDto;
 import fr.chatop.api.model.Rental;
+import fr.chatop.api.service.RentalService;
 import fr.chatop.api.service.RentalServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*")
 public class RentalController {
-	@Autowired private RentalServiceImpl rentalServiceImpl;
+	@Autowired private RentalService rentalService= new RentalServiceImpl();
 
 	@Autowired private JwtTokenUtil jwtUtil;
 
@@ -25,14 +26,14 @@ public class RentalController {
 	@GetMapping("/rentals")
 	public ResponseEntity<?> getAllRentals() {
 		HashMap<String, List<RentalDto>> map = new HashMap<>();
-		map.put("rentals", rentalServiceImpl.getRentals());
+		map.put("rentals", rentalService.getRentals());
 		return ResponseEntity.ok().body(map);
 	}
 
 	@ApiOperation("Shows rental with correct Id")
 	@GetMapping("/rentals/{id}")
 	public ResponseEntity<?> getRental(@PathVariable("id") final long id) {
-		Optional<RentalDto> candidate = rentalServiceImpl.getRental(id);
+		Optional<RentalDto> candidate = rentalService.getRental(id);
 		if (candidate.isPresent()) {
 			return ResponseEntity.ok().body(candidate);
 		} else {
@@ -58,10 +59,10 @@ public class RentalController {
 			candidate.setName(name);
 			candidate.setSurface(surface);
 			candidate.setPrice(price);
-			candidate.setPicture(rentalServiceImpl.savePicture(multipartFile));
+			candidate.setPicture(rentalService.savePicture(multipartFile));
 			candidate.setDescription(description);
 			candidate.setOwner_id(ownerId);
-			rentalServiceImpl.saveRental(candidate);
+			rentalService.saveRental(candidate);
 			return ResponseEntity.ok().body(candidate);
 		} catch (Exception e) {
 			return ResponseEntity.status(409).body(e);
@@ -91,7 +92,7 @@ public class RentalController {
 		try {
 			//we first try to check get the owner's id from jwt owner (already validated)
 			long ownerId=jwtUtil.getIdFromValidToken(jwt);
-			Optional<RentalDto> candidate = rentalServiceImpl.getRental(id);
+			Optional<RentalDto> candidate = rentalService.getRental(id);
 			if (candidate.isPresent()) {
 				//we now check if owner's id matches with rental's owner's id
 				//plus we need data from old rental to make new rental
@@ -107,7 +108,7 @@ public class RentalController {
 					modification.setDescription(description);
 					modification.setOwner_id(ownerId);
 					modification.setCreated_at(realCandidate.getCreated_at());
-					rentalServiceImpl.saveRental(modification);
+					rentalService.saveRental(modification);
 					return ResponseEntity.ok().body(modification);
 				} else {
 					return ResponseEntity.notFound().build();
