@@ -7,6 +7,8 @@ import fr.chatop.api.model.User;
 import fr.chatop.api.service.UserService;
 import fr.chatop.api.service.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -24,6 +26,10 @@ public class UserController {
 	}
 
 	@ApiOperation("Registers new User (email must be unique)")
+	@Operation(responses={
+			@ApiResponse(responseCode = "200", description="User successfully registered"),
+			@ApiResponse(responseCode = "409", description="Email is not available")
+	})
 	@PostMapping("/auth/register")
 	public AuthResponse addUser(@RequestBody User user) {
 		User candidate = userService.saveUser(user);
@@ -32,6 +38,10 @@ public class UserController {
 	}
 
 	@ApiOperation("Gets my own data if I'm logged in")
+	@Operation(responses={
+			@ApiResponse(responseCode = "200", description="User public data retrieval"),
+			@ApiResponse(responseCode = "401", description="Bad credentials"),
+	})
 	@GetMapping("/auth/me")
 	// Endpoint is secured so no need to check if jwt exists and is valid
 	public UserDto getMe(@RequestHeader("Authorization") String jwt) {

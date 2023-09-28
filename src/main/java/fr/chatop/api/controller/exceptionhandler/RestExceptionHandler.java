@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -32,6 +33,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             EntityNotFoundException ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(OwnerMismatchException.class)
+    protected ResponseEntity<Object> handleOwnerMismatch() {
+        ApiError apiError = new ApiError(CONFLICT);
+        apiError.setMessage("Owner doesn't match with User");
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(EmailAlreadyUsedException.class)
+    protected ResponseEntity<Object> handleEmailAlreadyUsed() {
+        ApiError apiError = new ApiError(CONFLICT);
+        apiError.setMessage("This email is already registered");
         return buildResponseEntity(apiError);
     }
 }

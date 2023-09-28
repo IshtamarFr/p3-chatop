@@ -2,6 +2,7 @@ package fr.chatop.api.service;
 
 import fr.chatop.api.config.AppConfig;
 import fr.chatop.api.controller.dto.UserDto;
+import fr.chatop.api.controller.exceptionhandler.EmailAlreadyUsedException;
 import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.User;
 import fr.chatop.api.repository.UserRepository;
@@ -27,7 +28,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User saveUser(User user) {
-		user.setPassword(appConfig.passwordEncoder().encode(user.getPassword()));
-		return userRepository.save(user);
+		Optional<User> candidate = userRepository.findByEmail(user.getEmail());
+		if (candidate.isPresent()) {
+			throw new EmailAlreadyUsedException();
+		} else {
+			user.setPassword(appConfig.passwordEncoder().encode(user.getPassword()));
+			return userRepository.save(user);
+		}
 	}
 }

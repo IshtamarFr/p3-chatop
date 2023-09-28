@@ -77,6 +77,7 @@ public class RentalController {
 	@Operation(responses={
 			@ApiResponse(responseCode = "200", description="Successfully modified rental"),
 			@ApiResponse(responseCode = "401", description="Bad credentials"),
+			@ApiResponse(responseCode = "409", description="Incorrect user")
 	})
 	@PutMapping("/rentals/{id}")
 	//@formatter:off
