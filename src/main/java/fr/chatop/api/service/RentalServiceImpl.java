@@ -38,8 +38,8 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 	@Override
-	public Rental saveRental(Rental rental) {
-		return rentalRepository.save(rental);
+	public RentalDto saveRental(Rental rental) {
+		return appConfig.modelMapper().map(rentalRepository.save(rental),RentalDto.class);
 	}
 
 	@Override

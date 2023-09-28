@@ -10,6 +10,6 @@ import java.util.List;
 public interface RentalService {
     List<RentalDto> getRentals();
     RentalDto getRental(final Long id);
-    Rental saveRental(Rental rental);
+    RentalDto saveRental(Rental rental);
     String savePicture(MultipartFile multipartFile) throws IOException;
 }

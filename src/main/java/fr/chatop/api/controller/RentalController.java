@@ -2,12 +2,13 @@ package fr.chatop.api.controller;
 
 import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.RentalDto;
+import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.Rental;
+import fr.chatop.api.model.User;
 import fr.chatop.api.service.RentalService;
 import fr.chatop.api.service.RentalServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +38,7 @@ public class RentalController {
 
 	@ApiOperation("Create a new rental for user - Picture being uploaded and kinda obfuscated")
 	@PostMapping("/rentals")
-	public ResponseEntity<?> createRental(
+	public RentalDto createRental(
 	//@formatter:off
 		@RequestParam("picture") MultipartFile multipartFile,
 		@RequestParam("name") String name,
@@ -47,20 +48,19 @@ public class RentalController {
 		@RequestHeader("Authorization") String jwt
 	//@formatter:on
 	) {
+		Long ownerId = jwtUtil.getIdFromValidToken(jwt);
+		Rental candidate = new Rental();
+		candidate.setName(name);
+		candidate.setSurface(surface);
+		candidate.setPrice(price);
+		candidate.setDescription(description);
+		candidate.setOwner_id(ownerId);
 		try {
-			Long ownerId = jwtUtil.getIdFromValidToken(jwt);
-			Rental candidate = new Rental();
-			candidate.setName(name);
-			candidate.setSurface(surface);
-			candidate.setPrice(price);
 			candidate.setPicture(rentalService.savePicture(multipartFile));
-			candidate.setDescription(description);
-			candidate.setOwner_id(ownerId);
-			rentalService.saveRental(candidate);
-			return ResponseEntity.ok().body(candidate);
 		} catch (Exception e) {
-			return ResponseEntity.status(409).body(e);
+			System.out.println(e);
 		}
+		return rentalService.saveRental(candidate);
 	}
 
 	@ApiOperation("Changes rental's details - picture cannot be changed")
@@ -73,7 +73,7 @@ public class RentalController {
 	 * 3- This method doesn't allow to change picture (not a requested feature)
 	 */
 	//@formatter: on
-	public ResponseEntity<?> modifyRental(
+	public RentalDto modifyRental(
 	//@formatter: off
 		@RequestParam("name") String name,
 		@RequestParam("surface") float surface,
@@ -84,7 +84,7 @@ public class RentalController {
 	//@formatter: on
 	) {
 		//we first try to check get the owner's id from jwt owner (already validated)
-		Long ownerId=jwtUtil.getIdFromValidToken(jwt);
+		long ownerId=jwtUtil.getIdFromValidToken(jwt);
 		RentalDto candidate = rentalService.getRental(id);
 		if (ownerId==candidate.getOwner_id()) {
 			//token's owner matches with rental's owner's id
@@ -97,11 +97,9 @@ public class RentalController {
 			modification.setDescription(description);
 			modification.setOwner_id(ownerId);
 			modification.setCreated_at(candidate.getCreated_at());
-			rentalService.saveRental(modification);
-			return ResponseEntity.ok().body(modification);
+			return rentalService.saveRental(modification);
 		} else {
-			//token's owner doesnt match with rental's owner id
-			return ResponseEntity.notFound().build();
+			throw new EntityNotFoundException(User.class,"id","user not matching");
 		}
 	}
 }
