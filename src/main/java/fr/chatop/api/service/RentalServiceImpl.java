@@ -4,6 +4,7 @@ import fr.chatop.api.config.AppConfig;
 import fr.chatop.api.config.util.FileUploadUtil;
 import fr.chatop.api.config.util.ObjectMapperUtils;
 import fr.chatop.api.controller.dto.RentalDto;
+import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,12 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 	@Override
-	public Optional<RentalDto> getRental(final Long id) {
+	public RentalDto getRental(final Long id) {
 		Optional<Rental> rental=rentalRepository.findById(id);
 		if (rental.isPresent()) {
-			RentalDto rentalDto=appConfig.modelMapper().map(rental.get(),RentalDto.class);
-			return Optional.of(rentalDto);
+			return appConfig.modelMapper().map(rental.get(),RentalDto.class);
 		} else {
-			return Optional.empty();
+			throw new EntityNotFoundException(Rental.class,"id",id.toString());
 		}
 	}
 

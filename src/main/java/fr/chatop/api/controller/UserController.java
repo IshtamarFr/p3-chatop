@@ -8,7 +8,6 @@ import fr.chatop.api.service.UserService;
 import fr.chatop.api.service.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,15 +24,10 @@ public class UserController {
 
 	@ApiOperation("Registers new User (email must be unique)")
 	@PostMapping("/auth/register")
-	public ResponseEntity<?> addUser(@RequestBody User user) {
-		try {
-			User candidate = userService.saveUser(user);
-			String accessToken = jwtUtil.generateAccessToken(candidate);
-			AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			return ResponseEntity.status(409).body(e);
-		}
+	public AuthResponse addUser(@RequestBody User user) {
+		User candidate = userService.saveUser(user);
+		String accessToken = jwtUtil.generateAccessToken(candidate);
+		return new AuthResponse(user.getEmail(), accessToken);
 	}
 
 	@ApiOperation("Gets my own data if I'm logged in")

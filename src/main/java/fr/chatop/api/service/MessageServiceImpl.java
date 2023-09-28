@@ -13,7 +13,6 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public Message saveMessage(Message message) {
-
 		return messageRepository.save(message);
 	}
 }

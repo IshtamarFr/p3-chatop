@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -24,21 +23,16 @@ public class RentalController {
 
 	@ApiOperation("Lists all rentals")
 	@GetMapping("/rentals")
-	public ResponseEntity<?> getAllRentals() {
+	public HashMap<String, List<RentalDto>> getAllRentals() {
 		HashMap<String, List<RentalDto>> map = new HashMap<>();
 		map.put("rentals", rentalService.getRentals());
-		return ResponseEntity.ok().body(map);
+		return map;
 	}
 
 	@ApiOperation("Shows rental with correct Id")
 	@GetMapping("/rentals/{id}")
-	public ResponseEntity<?> getRental(@PathVariable("id") final long id) {
-		Optional<RentalDto> candidate = rentalService.getRental(id);
-		if (candidate.isPresent()) {
-			return ResponseEntity.ok().body(candidate);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public RentalDto getRental(@PathVariable("id") final long id) {
+		return rentalService.getRental(id);
 	}
 
 	@ApiOperation("Create a new rental for user - Picture being uploaded and kinda obfuscated")
@@ -54,7 +48,7 @@ public class RentalController {
 	//@formatter:on
 	) {
 		try {
-			long ownerId = jwtUtil.getIdFromValidToken(jwt);
+			Long ownerId = jwtUtil.getIdFromValidToken(jwt);
 			Rental candidate = new Rental();
 			candidate.setName(name);
 			candidate.setSurface(surface);
@@ -89,35 +83,25 @@ public class RentalController {
 		@RequestHeader("Authorization") String jwt
 	//@formatter: on
 	) {
-		try {
-			//we first try to check get the owner's id from jwt owner (already validated)
-			long ownerId=jwtUtil.getIdFromValidToken(jwt);
-			Optional<RentalDto> candidate = rentalService.getRental(id);
-			if (candidate.isPresent()) {
-				//we now check if owner's id matches with rental's owner's id
-				//plus we need data from old rental to make new rental
-				RentalDto realCandidate=candidate.get();
-				if (ownerId==realCandidate.getOwner_id()) {
-					//token's owner matches with rental's owner's id
-					Rental modification=new Rental();
-					modification.setId(id);
-					modification.setName(name);
-					modification.setSurface(surface);
-					modification.setPrice(price);
-					modification.setPicture(realCandidate.getPicture());
-					modification.setDescription(description);
-					modification.setOwner_id(ownerId);
-					modification.setCreated_at(realCandidate.getCreated_at());
-					rentalService.saveRental(modification);
-					return ResponseEntity.ok().body(modification);
-				} else {
-					return ResponseEntity.notFound().build();
-				}
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(409).body(e);
+		//we first try to check get the owner's id from jwt owner (already validated)
+		Long ownerId=jwtUtil.getIdFromValidToken(jwt);
+		RentalDto candidate = rentalService.getRental(id);
+		if (ownerId==candidate.getOwner_id()) {
+			//token's owner matches with rental's owner's id
+			Rental modification=new Rental();
+			modification.setId(id);
+			modification.setName(name);
+			modification.setSurface(surface);
+			modification.setPrice(price);
+			modification.setPicture(candidate.getPicture());
+			modification.setDescription(description);
+			modification.setOwner_id(ownerId);
+			modification.setCreated_at(candidate.getCreated_at());
+			rentalService.saveRental(modification);
+			return ResponseEntity.ok().body(modification);
+		} else {
+			//token's owner doesnt match with rental's owner id
+			return ResponseEntity.notFound().build();
 		}
 	}
 }
