@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +25,8 @@ public class MessageController {
 			@ApiResponse(responseCode = "404", description="User or rental not found")
 	})
 	@PostMapping("/messages")
-	public String postNewMessage(@RequestBody Message message) {
+	public ResponseEntity<String> postNewMessage(@RequestBody Message message) {
 			messageService.saveMessage(message);
-			return "Message sent with success";
+			return ResponseEntity.ok().body("Message sent with success");
 	}
 }

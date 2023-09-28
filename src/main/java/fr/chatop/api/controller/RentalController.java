@@ -2,13 +2,15 @@ package fr.chatop.api.controller;
 
 import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.RentalDto;
-import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
+import fr.chatop.api.controller.exceptionhandler.OwnerMismatchException;
 import fr.chatop.api.model.Rental;
-import fr.chatop.api.model.User;
 import fr.chatop.api.service.RentalService;
 import fr.chatop.api.service.RentalServiceImpl;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,22 +25,34 @@ public class RentalController {
 	@Autowired private JwtTokenUtil jwtUtil;
 
 	@ApiOperation("Lists all rentals")
+	@Operation(responses={
+			@ApiResponse(responseCode = "200", description="Retrieved all rentals' data"),
+			@ApiResponse(responseCode = "401", description="Bad credentials")
+	})
 	@GetMapping("/rentals")
-	public HashMap<String, List<RentalDto>> getAllRentals() {
+	public ResponseEntity<HashMap<String, List<RentalDto>>> getAllRentals() {
 		HashMap<String, List<RentalDto>> map = new HashMap<>();
 		map.put("rentals", rentalService.getRentals());
-		return map;
+		return ResponseEntity.ok().body(map);
 	}
 
 	@ApiOperation("Shows rental with correct Id")
+	@Operation(responses={
+			@ApiResponse(responseCode = "200", description="Retrieved specific rental's data"),
+			@ApiResponse(responseCode = "401", description="Bad credentials")
+	})
 	@GetMapping("/rentals/{id}")
-	public RentalDto getRental(@PathVariable("id") final long id) {
-		return rentalService.getRental(id);
+	public ResponseEntity<RentalDto> getRental(@PathVariable("id") final long id) {
+		return ResponseEntity.ok().body(rentalService.getRental(id));
 	}
 
 	@ApiOperation("Create a new rental for user - Picture being uploaded and kinda obfuscated")
+	@Operation(responses={
+			@ApiResponse(responseCode = "200", description="Successfully created new rental"),
+			@ApiResponse(responseCode = "401", description="Bad credentials")
+	})
 	@PostMapping("/rentals")
-	public RentalDto createRental(
+	public ResponseEntity<RentalDto> createRental(
 	//@formatter:off
 		@RequestParam("picture") MultipartFile multipartFile,
 		@RequestParam("name") String name,
@@ -47,7 +61,7 @@ public class RentalController {
 		@RequestParam("description") String description,
 		@RequestHeader("Authorization") String jwt
 	//@formatter:on
-	) {
+	) throws Exception {
 		Long ownerId = jwtUtil.getIdFromValidToken(jwt);
 		Rental candidate = new Rental();
 		candidate.setName(name);
@@ -55,15 +69,15 @@ public class RentalController {
 		candidate.setPrice(price);
 		candidate.setDescription(description);
 		candidate.setOwner_id(ownerId);
-		try {
-			candidate.setPicture(rentalService.savePicture(multipartFile));
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return rentalService.saveRental(candidate);
+		candidate.setPicture(rentalService.savePicture(multipartFile));
+		return ResponseEntity.status(200).body(rentalService.saveRental(candidate));
 	}
 
 	@ApiOperation("Changes rental's details - picture cannot be changed")
+	@Operation(responses={
+			@ApiResponse(responseCode = "200", description="Successfully modified rental"),
+			@ApiResponse(responseCode = "401", description="Bad credentials"),
+	})
 	@PutMapping("/rentals/{id}")
 	//@formatter:off
 	/*
@@ -73,7 +87,7 @@ public class RentalController {
 	 * 3- This method doesn't allow to change picture (not a requested feature)
 	 */
 	//@formatter: on
-	public RentalDto modifyRental(
+	public ResponseEntity<RentalDto> modifyRental(
 	//@formatter: off
 		@RequestParam("name") String name,
 		@RequestParam("surface") float surface,
@@ -82,7 +96,7 @@ public class RentalController {
 		@PathVariable("id") long id,
 		@RequestHeader("Authorization") String jwt
 	//@formatter: on
-	) {
+	) throws Exception {
 		//we first try to check get the owner's id from jwt owner (already validated)
 		long ownerId=jwtUtil.getIdFromValidToken(jwt);
 		RentalDto candidate = rentalService.getRental(id);
@@ -97,9 +111,9 @@ public class RentalController {
 			modification.setDescription(description);
 			modification.setOwner_id(ownerId);
 			modification.setCreated_at(candidate.getCreated_at());
-			return rentalService.saveRental(modification);
+			return ResponseEntity.ok().body(rentalService.saveRental(modification));
 		} else {
-			throw new EntityNotFoundException(User.class,"id","user not matching");
+			throw new OwnerMismatchException();
 		}
 	}
 }
