@@ -1,4 +1,4 @@
-package fr.chatop.api.controller;
+package fr.chatop.api.controller.exceptionhandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

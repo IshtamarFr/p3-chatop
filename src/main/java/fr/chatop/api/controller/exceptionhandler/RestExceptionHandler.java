@@ -1,5 +1,6 @@
-package fr.chatop.api.controller;
+package fr.chatop.api.controller.exceptionhandler;
 
+import fr.chatop.api.controller.exceptionhandler.ApiError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
