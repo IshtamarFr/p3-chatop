@@ -4,7 +4,8 @@ import fr.chatop.api.config.util.JwtTokenUtil;
 import fr.chatop.api.controller.dto.AuthRequest;
 import fr.chatop.api.controller.dto.AuthResponse;
 import fr.chatop.api.model.User;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,12 @@ public class AuthApi {
 	@Autowired AuthenticationManager authManager;
 	@Autowired JwtTokenUtil jwtUtil;
 
-	@ApiOperation("Login user and sends Jwt token")
+    @Operation(responses={
+            @ApiResponse(responseCode = "200", description="Successfully logged in"),
+            @ApiResponse(responseCode = "401", description="Bad credentials")
+    })
 	@PostMapping("/auth/login")
-    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

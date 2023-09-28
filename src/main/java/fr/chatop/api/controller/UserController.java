@@ -9,6 +9,7 @@ import fr.chatop.api.service.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -16,7 +17,7 @@ public class UserController {
 	@Autowired private UserService userService=new UserServiceImpl();
 	@Autowired private JwtTokenUtil jwtUtil;
 
-	@ApiOperation("[Test-Only] Gets data from User by Id")
+	@ApiIgnore
 	@GetMapping("/user/{id}")
 	public UserDto getUser(@PathVariable("id") final Long id) {
 		return userService.getUser(id);
@@ -27,7 +28,7 @@ public class UserController {
 	public AuthResponse addUser(@RequestBody User user) {
 		User candidate = userService.saveUser(user);
 		String accessToken = jwtUtil.generateAccessToken(candidate);
-		return new AuthResponse(user.getEmail(), accessToken);
+		return new AuthResponse(candidate.getEmail(), accessToken);
 	}
 
 	@ApiOperation("Gets my own data if I'm logged in")
