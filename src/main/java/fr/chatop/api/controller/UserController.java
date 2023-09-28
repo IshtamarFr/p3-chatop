@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
-@ControllerAdvice
 @CrossOrigin(origins = "*")
 public class UserController {
 	@Autowired private UserService userService=new UserServiceImpl();
@@ -22,13 +19,8 @@ public class UserController {
 
 	@ApiOperation("[Test-Only] Gets data from User by Id")
 	@GetMapping("/user/{id}")
-	public ResponseEntity<?> getUser(@PathVariable("id") final long id) {
-		Optional<UserDto> candidate = userService.getUser(id);
-		if (candidate.isPresent()) {
-			return ResponseEntity.ok().body(candidate);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public UserDto getUser(@PathVariable("id") final Long id) {
+		return userService.getUser(id);
 	}
 
 	@ApiOperation("Registers new User (email must be unique)")
@@ -47,17 +39,8 @@ public class UserController {
 	@ApiOperation("Gets my own data if I'm logged in")
 	@GetMapping("/auth/me")
 	// Endpoint is secured so no need to check if jwt exists and is valid
-	public ResponseEntity<?> getMe(@RequestHeader("Authorization") String jwt) {
-		try {
-			long id = jwtUtil.getIdFromValidToken(jwt);
-			Optional<UserDto> candidate = userService.getUser(id);
-			if (candidate.isPresent()) {
-				return ResponseEntity.ok().body(candidate);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(409).body(e);
-		}
+	public UserDto getMe(@RequestHeader("Authorization") String jwt) {
+		Long id = jwtUtil.getIdFromValidToken(jwt);
+		return userService.getUser(id);
 	}
 }

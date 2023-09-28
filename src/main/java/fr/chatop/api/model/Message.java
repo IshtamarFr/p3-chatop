@@ -11,10 +11,10 @@ import java.sql.Timestamp;
 public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
-	private long rental_id;
-	private long user_id;
+	private Long rental_id;
+	private Long user_id;
 	private String message;
 
 	private Timestamp created_at;

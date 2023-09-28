@@ -2,6 +2,7 @@ package fr.chatop.api.service;
 
 import fr.chatop.api.config.AppConfig;
 import fr.chatop.api.controller.dto.UserDto;
+import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.User;
 import fr.chatop.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired private AppConfig appConfig;
 
 	@Override
-	public Optional<UserDto> getUser(final long id) {
+	public UserDto getUser(final Long id) {
 		Optional<User> user = userRepository.findById(id);
 		if (user.isPresent()) {
-			UserDto userDto=appConfig.modelMapper().map(user.get(), UserDto.class);
-			return Optional.of(userDto);
+			return appConfig.modelMapper().map(user.get(), UserDto.class);
 		} else {
-			return Optional.empty();
+			throw new EntityNotFoundException(User.class,"id",id.toString());
 		}
 	}
 

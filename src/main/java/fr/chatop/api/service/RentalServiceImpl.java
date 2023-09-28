@@ -27,7 +27,7 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 	@Override
-	public Optional<RentalDto> getRental(final long id) {
+	public Optional<RentalDto> getRental(final Long id) {
 		Optional<Rental> rental=rentalRepository.findById(id);
 		if (rental.isPresent()) {
 			RentalDto rentalDto=appConfig.modelMapper().map(rental.get(),RentalDto.class);

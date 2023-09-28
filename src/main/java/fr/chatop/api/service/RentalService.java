@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface RentalService {
     List<RentalDto> getRentals();
-    Optional<RentalDto> getRental(final long id);
+    Optional<RentalDto> getRental(final Long id);
     Rental saveRental(Rental rental);
     String savePicture(MultipartFile multipartFile) throws IOException;
 }
