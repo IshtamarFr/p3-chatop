@@ -1,6 +1,7 @@
-package fr.chatop.api.service;
+package fr.chatop.api.service.impl;
 
 import fr.chatop.api.config.AppConfig;
+import fr.chatop.api.service.RentalService;
 import fr.chatop.api.util.FileUploadUtil;
 import fr.chatop.api.util.ObjectMapperUtils;
 import fr.chatop.api.dto.RentalDto;

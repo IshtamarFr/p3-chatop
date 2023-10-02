@@ -2,7 +2,7 @@ package fr.chatop.api.controller;
 
 import fr.chatop.api.model.Message;
 import fr.chatop.api.service.MessageService;
-import fr.chatop.api.service.MessageServiceImpl;
+import fr.chatop.api.service.impl.MessageServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

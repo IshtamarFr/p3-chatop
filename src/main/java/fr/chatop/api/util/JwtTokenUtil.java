@@ -4,15 +4,15 @@ import fr.chatop.api.model.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
-	private static final long EXPIRE_DURATION = 1 * 24 * 60 * 60 * 1000; // 1 day
-
-	private final String SECRET_KEY = "B27F48AD27BDAAA197327AA39F2718CABAD2987AB3B3C7";
+	@Value("${fr.chatop.api.expire_duration}") private long EXPIRE_DURATION;
+	@Value("${fr.chatop.api.secret_key}") private String SECRET_KEY;
 
 	public String generateAccessToken(User user) {
 		return Jwts.builder().setSubject(String.format("%s,%s", user.getId(), user.getEmail())).setIssuer("Ishta")

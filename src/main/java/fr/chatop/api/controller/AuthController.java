@@ -2,7 +2,7 @@ package fr.chatop.api.controller;
 
 import fr.chatop.api.dto.UserDto;
 import fr.chatop.api.service.UserService;
-import fr.chatop.api.service.UserServiceImpl;
+import fr.chatop.api.service.impl.UserServiceImpl;
 import fr.chatop.api.util.JwtTokenUtil;
 import fr.chatop.api.dto.AuthRequest;
 import fr.chatop.api.dto.AuthResponse;

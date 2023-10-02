@@ -5,7 +5,7 @@ import fr.chatop.api.dto.RentalDto;
 import fr.chatop.api.exceptionhandler.OwnerMismatchException;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.service.RentalService;
-import fr.chatop.api.service.RentalServiceImpl;
+import fr.chatop.api.service.impl.RentalServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

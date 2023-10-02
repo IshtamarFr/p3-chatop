@@ -1,4 +1,4 @@
-package fr.chatop.api.service;
+package fr.chatop.api.service.impl;
 
 import fr.chatop.api.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.Message;
@@ -7,6 +7,7 @@ import fr.chatop.api.model.User;
 import fr.chatop.api.repository.MessageRepository;
 import fr.chatop.api.repository.RentalRepository;
 import fr.chatop.api.repository.UserRepository;
+import fr.chatop.api.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

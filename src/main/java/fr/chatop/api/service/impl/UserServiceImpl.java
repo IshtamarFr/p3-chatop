@@ -1,4 +1,4 @@
-package fr.chatop.api.service;
+package fr.chatop.api.service.impl;
 
 import fr.chatop.api.config.AppConfig;
 import fr.chatop.api.dto.UserDto;
@@ -6,6 +6,7 @@ import fr.chatop.api.exceptionhandler.EmailAlreadyUsedException;
 import fr.chatop.api.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.User;
 import fr.chatop.api.repository.UserRepository;
+import fr.chatop.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
