@@ -1,8 +1,8 @@
 package fr.chatop.api.controller;
 
-import fr.chatop.api.config.util.JwtTokenUtil;
-import fr.chatop.api.controller.dto.RentalDto;
-import fr.chatop.api.controller.exceptionhandler.OwnerMismatchException;
+import fr.chatop.api.util.JwtTokenUtil;
+import fr.chatop.api.dto.RentalDto;
+import fr.chatop.api.exceptionhandler.OwnerMismatchException;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.service.RentalService;
 import fr.chatop.api.service.RentalServiceImpl;
@@ -77,7 +77,7 @@ public class RentalController {
 	@Operation(responses={
 			@ApiResponse(responseCode = "200", description="Successfully modified rental"),
 			@ApiResponse(responseCode = "401", description="Bad credentials"),
-			@ApiResponse(responseCode = "409", description="Incorrect user")
+			@ApiResponse(responseCode = "400", description="Incorrect user")
 	})
 	@PutMapping("/rentals/{id}")
 	//@formatter:off
@@ -97,7 +97,7 @@ public class RentalController {
 		@PathVariable("id") long id,
 		@RequestHeader("Authorization") String jwt
 	//@formatter: on
-	) throws Exception {
+	) throws OwnerMismatchException {
 		//we first try to check get the owner's id from jwt owner (already validated)
 		long ownerId=jwtUtil.getIdFromValidToken(jwt);
 		RentalDto candidate = rentalService.getRental(id);

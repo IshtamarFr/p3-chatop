@@ -1,6 +1,6 @@
 package fr.chatop.api.config;
 
-import fr.chatop.api.config.util.JwtTokenUtil;
+import fr.chatop.api.util.JwtTokenUtil;
 import fr.chatop.api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

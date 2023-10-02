@@ -1,10 +1,10 @@
 package fr.chatop.api.service;
 
 import fr.chatop.api.config.AppConfig;
-import fr.chatop.api.config.util.FileUploadUtil;
-import fr.chatop.api.config.util.ObjectMapperUtils;
-import fr.chatop.api.controller.dto.RentalDto;
-import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
+import fr.chatop.api.util.FileUploadUtil;
+import fr.chatop.api.util.ObjectMapperUtils;
+import fr.chatop.api.dto.RentalDto;
+import fr.chatop.api.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;

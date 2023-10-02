@@ -1,6 +1,6 @@
 package fr.chatop.api.service;
 
-import fr.chatop.api.controller.dto.RentalDto;
+import fr.chatop.api.dto.RentalDto;
 import fr.chatop.api.model.Rental;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package fr.chatop.api.controller.exceptionhandler;
+package fr.chatop.api.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

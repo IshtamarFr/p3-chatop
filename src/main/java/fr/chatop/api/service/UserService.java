@@ -1,6 +1,6 @@
 package fr.chatop.api.service;
 
-import fr.chatop.api.controller.dto.UserDto;
+import fr.chatop.api.dto.UserDto;
 import fr.chatop.api.model.User;
 
 public interface UserService {

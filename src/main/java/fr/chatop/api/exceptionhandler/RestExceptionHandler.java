@@ -1,4 +1,4 @@
-package fr.chatop.api.controller.exceptionhandler;
+package fr.chatop.api.exceptionhandler;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -38,14 +37,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(OwnerMismatchException.class)
     protected ResponseEntity<Object> handleOwnerMismatch() {
-        ApiError apiError = new ApiError(CONFLICT);
+        ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("Owner doesn't match with User");
         return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler(EmailAlreadyUsedException.class)
     protected ResponseEntity<Object> handleEmailAlreadyUsed() {
-        ApiError apiError = new ApiError(CONFLICT);
+        ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("This email is already registered");
         return buildResponseEntity(apiError);
     }

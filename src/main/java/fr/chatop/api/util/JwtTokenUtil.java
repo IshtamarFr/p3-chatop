@@ -1,4 +1,4 @@
-package fr.chatop.api.config.util;
+package fr.chatop.api.util;
 
 import fr.chatop.api.model.User;
 import io.jsonwebtoken.*;

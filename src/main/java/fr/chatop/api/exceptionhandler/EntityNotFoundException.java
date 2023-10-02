@@ -1,4 +1,4 @@
-package fr.chatop.api.controller.exceptionhandler;
+package fr.chatop.api.exceptionhandler;
 
 import org.apache.commons.lang3.StringUtils;
 

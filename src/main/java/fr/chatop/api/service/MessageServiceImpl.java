@@ -1,6 +1,6 @@
 package fr.chatop.api.service;
 
-import fr.chatop.api.controller.exceptionhandler.EntityNotFoundException;
+import fr.chatop.api.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.Message;
 import fr.chatop.api.model.Rental;
 import fr.chatop.api.model.User;

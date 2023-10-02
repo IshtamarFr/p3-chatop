@@ -1,9 +1,13 @@
 package fr.chatop.api.controller;
 
-import fr.chatop.api.config.util.JwtTokenUtil;
-import fr.chatop.api.controller.dto.AuthRequest;
-import fr.chatop.api.controller.dto.AuthResponse;
+import fr.chatop.api.dto.UserDto;
+import fr.chatop.api.service.UserService;
+import fr.chatop.api.service.UserServiceImpl;
+import fr.chatop.api.util.JwtTokenUtil;
+import fr.chatop.api.dto.AuthRequest;
+import fr.chatop.api.dto.AuthResponse;
 import fr.chatop.api.model.User;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +17,40 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-public class AuthApi {
+@CrossOrigin(origins = "*")
+public class AuthController {
 	@Autowired AuthenticationManager authManager;
 	@Autowired JwtTokenUtil jwtUtil;
+    @Autowired private UserService userService=new UserServiceImpl();
+
+    @ApiOperation("Registers new User (email must be unique)")
+    @Operation(responses={
+            @ApiResponse(responseCode = "200", description="User successfully registered"),
+            @ApiResponse(responseCode = "400", description="Email is not available")
+    })
+    @PostMapping("/auth/register")
+    public AuthResponse addUser(@RequestBody User user) {
+        User candidate = userService.saveUser(user);
+        String accessToken = jwtUtil.generateAccessToken(candidate);
+        return new AuthResponse(candidate.getEmail(), accessToken);
+    }
+
+    @ApiOperation("Gets my own data if I'm logged in")
+    @Operation(responses={
+            @ApiResponse(responseCode = "200", description="User public data retrieval"),
+            @ApiResponse(responseCode = "401", description="Bad credentials"),
+    })
+    @GetMapping("/auth/me")
+    // Endpoint is secured so no need to check if jwt exists and is valid
+    public UserDto getMe(@RequestHeader("Authorization") String jwt) {
+        Long id = jwtUtil.getIdFromValidToken(jwt);
+        return userService.getUser(id);
+    }
 
     @Operation(responses={
             @ApiResponse(responseCode = "200", description="Successfully logged in"),

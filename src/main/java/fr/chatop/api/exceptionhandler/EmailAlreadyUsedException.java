@@ -1,4 +1,4 @@
-package fr.chatop.api.controller.exceptionhandler;
+package fr.chatop.api.exceptionhandler;
 
 public class EmailAlreadyUsedException extends RuntimeException{
     public EmailAlreadyUsedException() {

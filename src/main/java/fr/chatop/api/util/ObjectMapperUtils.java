@@ -1,4 +1,4 @@
-package fr.chatop.api.config.util;
+package fr.chatop.api.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
