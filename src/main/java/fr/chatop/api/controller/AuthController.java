@@ -1,12 +1,13 @@
 package fr.chatop.api.controller;
 
+import fr.chatop.api.dto.AuthRequest;
+import fr.chatop.api.dto.AuthResponse;
+import fr.chatop.api.dto.NewUserDto;
 import fr.chatop.api.dto.UserDto;
+import fr.chatop.api.model.User;
 import fr.chatop.api.service.UserService;
 import fr.chatop.api.service.impl.UserServiceImpl;
 import fr.chatop.api.util.JwtTokenUtil;
-import fr.chatop.api.dto.AuthRequest;
-import fr.chatop.api.dto.AuthResponse;
-import fr.chatop.api.model.User;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,7 +35,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description="Email is not available")
     })
     @PostMapping("/auth/register")
-    public AuthResponse addUser(@RequestBody User user) {
+    public AuthResponse addUser(@RequestBody NewUserDto user) {
         User candidate = userService.saveUser(user);
         String accessToken = jwtUtil.generateAccessToken(candidate);
         return new AuthResponse(candidate.getEmail(), accessToken);
