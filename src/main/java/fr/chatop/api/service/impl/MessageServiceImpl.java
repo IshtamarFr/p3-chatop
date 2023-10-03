@@ -1,5 +1,7 @@
 package fr.chatop.api.service.impl;
 
+import fr.chatop.api.config.AppConfig;
+import fr.chatop.api.dto.MessageDto;
 import fr.chatop.api.exceptionhandler.EntityNotFoundException;
 import fr.chatop.api.model.Message;
 import fr.chatop.api.model.Rental;
@@ -18,14 +20,15 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired private MessageRepository messageRepository;
 	@Autowired private RentalRepository rentalRepository;
 	@Autowired private UserRepository userRepository;
+	@Autowired private AppConfig appConfig;
 
 	@Override
-	public Message saveMessage(Message message) {
+	public Message saveMessage(MessageDto message) {
 		Optional<User> user = userRepository.findById(message.getUser_id());
 		if (user.isPresent()) {
 			Optional<Rental> rental = rentalRepository.findById(message.getRental_id());
 			if (rental.isPresent()) {
-				return messageRepository.save(message);
+				return messageRepository.save(appConfig.modelMapper().map(message, Message.class));
 			} else {
 				throw new EntityNotFoundException(Rental.class,"id",message.getRental_id().toString());
 			}

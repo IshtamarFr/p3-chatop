@@ -23,6 +23,8 @@ public class RentalDto {
     @Schema(example="2")
     private long owner_id;
 
+    @Schema(hidden=true)
     private Timestamp created_at;
+    @Schema(hidden=true)
     private Timestamp updated_at;
 }

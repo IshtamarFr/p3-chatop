@@ -21,7 +21,6 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class RentalController {
 	@Autowired private RentalService rentalService= new RentalServiceImpl();
-
 	@Autowired private JwtTokenUtil jwtUtil;
 
 	@ApiOperation("Lists all rentals")
@@ -30,7 +29,7 @@ public class RentalController {
 			@ApiResponse(responseCode = "401", description="Bad credentials")
 	})
 	@GetMapping("/rentals")
-	public ResponseEntity<HashMap<String, List<RentalDto>>> getAllRentals() {
+	public ResponseEntity<HashMap<String, List<RentalDto>>> getAllRentals(@RequestHeader("Authorization") String jwt) {
 		HashMap<String, List<RentalDto>> map = new HashMap<>();
 		map.put("rentals", rentalService.getRentals());
 		return ResponseEntity.ok().body(map);
@@ -42,7 +41,7 @@ public class RentalController {
 			@ApiResponse(responseCode = "401", description="Bad credentials")
 	})
 	@GetMapping("/rentals/{id}")
-	public ResponseEntity<RentalDto> getRental(@PathVariable("id") final long id) {
+	public ResponseEntity<RentalDto> getRental(@PathVariable("id") final long id,@RequestHeader("Authorization") String jwt) {
 		return ResponseEntity.ok().body(rentalService.getRental(id));
 	}
 
@@ -54,7 +53,7 @@ public class RentalController {
 	@PostMapping("/rentals")
 	public ResponseEntity<RentalDto> createRental(
 	//@formatter:off
-		@RequestParam("picture") MultipartFile multipartFile,
+		@RequestPart("picture") MultipartFile multipartFile,
 		@RequestParam("name") String name,
 		@RequestParam("surface") float surface,
 		@RequestParam("price") float price,

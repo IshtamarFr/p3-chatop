@@ -13,6 +13,8 @@ public class UserDto {
     private String email;
     @Schema(example="Jean Dupont")
     private String name;
+    @Schema(hidden=true)
     private Timestamp created_at;
+    @Schema(hidden=true)
     private Timestamp updated_at;
 }
