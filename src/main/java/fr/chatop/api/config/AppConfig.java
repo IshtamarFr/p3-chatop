@@ -8,10 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AppConfig {
-    @Bean public ModelMapper modelMapper() {
+    @Bean public static ModelMapper modelMapper() {
         return new ModelMapper();
     }
-    @Bean public PasswordEncoder passwordEncoder() {
+    @Bean public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

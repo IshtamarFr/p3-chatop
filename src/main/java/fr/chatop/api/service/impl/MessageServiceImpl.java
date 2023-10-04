@@ -20,7 +20,7 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired private MessageRepository messageRepository;
 	@Autowired private RentalRepository rentalRepository;
 	@Autowired private UserRepository userRepository;
-	@Autowired private AppConfig appConfig;
+
 
 	@Override
 	public Message saveMessage(MessageDto message) {
@@ -28,7 +28,7 @@ public class MessageServiceImpl implements MessageService {
 		if (user.isPresent()) {
 			Optional<Rental> rental = rentalRepository.findById(message.getRental_id());
 			if (rental.isPresent()) {
-				return messageRepository.save(appConfig.modelMapper().map(message, Message.class));
+				return messageRepository.save(AppConfig.modelMapper().map(message, Message.class));
 			} else {
 				throw new EntityNotFoundException(Rental.class,"id",message.getRental_id().toString());
 			}

@@ -16,13 +16,12 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired private UserRepository userRepository;
-	@Autowired private AppConfig appConfig;
 
 	@Override
 	public UserDto getUser(final Long id) {
 		Optional<User> user = userRepository.findById(id);
 		if (user.isPresent()) {
-			return appConfig.modelMapper().map(user.get(), UserDto.class);
+			return AppConfig.modelMapper().map(user.get(), UserDto.class);
 		} else {
 			throw new EntityNotFoundException(User.class,"id",id.toString());
 		}
@@ -34,8 +33,8 @@ public class UserServiceImpl implements UserService {
 		if (candidate.isPresent()) {
 			throw new EmailAlreadyUsedException();
 		} else {
-			user.setPassword(appConfig.passwordEncoder().encode(user.getPassword()));
-			return userRepository.save(appConfig.modelMapper().map(user,User.class));
+			user.setPassword(AppConfig.passwordEncoder().encode(user.getPassword()));
+			return userRepository.save(AppConfig.modelMapper().map(user,User.class));
 		}
 	}
 }

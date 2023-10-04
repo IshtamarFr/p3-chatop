@@ -20,7 +20,6 @@ import java.util.Optional;
 @Service
 public class RentalServiceImpl implements RentalService {
 	@Autowired private RentalRepository rentalRepository;
-	@Autowired private AppConfig appConfig;
 
 	@Override
 	public List<RentalDto> getRentals() {
@@ -32,7 +31,7 @@ public class RentalServiceImpl implements RentalService {
 	public RentalDto getRental(final Long id) {
 		Optional<Rental> rental=rentalRepository.findById(id);
 		if (rental.isPresent()) {
-			return appConfig.modelMapper().map(rental.get(),RentalDto.class);
+			return AppConfig.modelMapper().map(rental.get(),RentalDto.class);
 		} else {
 			throw new EntityNotFoundException(Rental.class,"id",id.toString());
 		}

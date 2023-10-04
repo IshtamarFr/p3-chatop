@@ -21,21 +21,13 @@ public class Rental {
 	@Schema(hidden = true)
 	private Long id;
 
-	@Schema(example="My dream house", required=true)
 	private String name;
-	@Schema(example="215.0", required=true)
 	private float surface;
-	@Schema(example="120.0", required=true)
 	private float price;
-	@Schema(example="C:/test.jpg")
 	private String picture;
-	@Schema(example="My grandmother's house", required=true)
 	private String description;
-	@Schema(example="2", required=true)
 	private Long owner_id;
 
-	@Schema(hidden=true)
 	private Timestamp created_at;
-	@Schema(hidden=true)
 	private Timestamp updated_at;
 }
