@@ -39,7 +39,7 @@ public class RentalServiceImpl implements RentalService {
 
 	@Override
 	public RentalDto saveRental(Rental rental) {
-		return appConfig.modelMapper().map(rentalRepository.save(rental),RentalDto.class);
+		return AppConfig.modelMapper().map(rentalRepository.save(rental),RentalDto.class);
 	}
 
 	@Override

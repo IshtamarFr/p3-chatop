@@ -19,8 +19,14 @@ public class Message {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Long rental_id;
-	private Long user_id;
+	@ManyToOne
+	@JoinColumn(name="rental_id",referencedColumnName = "id")
+	private Rental rental;
+
+	@ManyToOne
+	@JoinColumn(name="user_id",referencedColumnName = "id")
+	private User user;
+
 	private String message;
 	private Timestamp created_at;
 	private Timestamp updated_at;

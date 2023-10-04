@@ -28,7 +28,10 @@ public class MessageServiceImpl implements MessageService {
 		if (user.isPresent()) {
 			Optional<Rental> rental = rentalRepository.findById(message.getRental_id());
 			if (rental.isPresent()) {
-				return messageRepository.save(AppConfig.modelMapper().map(message, Message.class));
+				Message realMessage=AppConfig.modelMapper().map(message, Message.class);
+				realMessage.setUser(user.get());
+				realMessage.setRental(rental.get());
+				return messageRepository.save(realMessage);
 			} else {
 				throw new EntityNotFoundException(Rental.class,"id",message.getRental_id().toString());
 			}
