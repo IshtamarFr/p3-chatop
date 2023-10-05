@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -49,4 +49,6 @@ public class User implements UserDetails {
 	@Override public boolean isEnabled() {
 		return true;
 	}
+
+	public String getRole(){return "USER";}
 }
